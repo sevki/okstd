@@ -1,0 +1,40 @@
+[package]
+name = "okstd"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.81"
+backtrace = { version = "0.3.71", features = ["serde", "serialize-serde"] }
+base64 = "0.22.0"
+crc16 = "0.4.0"
+fastvlq = "1.1.1"
+futures = "0.3.30"
+hex = "0.4.3"
+num_cpus = "1.16.0"
+ok_macros = { version = "0.1.0", path = "ok_macros" }
+rustc-demangle = "0.1.23"
+serde = "*"
+serde_json = "*"
+slog = "2.7.0"
+slog-scope = "4.4.0"
+slog-term = "2.9.1"
+sourcemap = "8.0.1"
+symbolic = { version = "12.8.0", features = [
+    "common-serde",
+    "debuginfo-serde",
+    "demangle",
+    "symcache",
+    "debuginfo",
+] }
+termcolor = "1.4.1"
+tokio = { version = "1.37.0", features = ["full"] }
+url = "2.5.0"
+
+[workspace]
+members = ["integration", "ok_macros"]
+
+[dev-dependencies]
+trybuild = "1.0.96"
