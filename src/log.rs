@@ -1,15 +1,13 @@
-use std::{io::Write, ops::Add, path::PathBuf};
+use colored::*;
+use fern::colors::ColoredLevelConfig;
+use std::{io, path::PathBuf};
 
-use slog::{slog_o, Drain, Logger};
-
-use termcolor::{BufferWriter, Color, ColorChoice, ColorSpec, WriteColor};
-
-// get module colour hashes the module name
-// and attempts to return a uniqe color as far as ansi colors go
-fn get_module_colour(module: &str) -> Color {
+// get module color hashes the module name
+// and attempts to return a unique color as far as ansi colors go
+fn get_module_color(module: &str) -> colored::Color {
     // crc16 is a good hash for this
     let hash = crc16::State::<crc16::XMODEM>::calculate(module.as_bytes());
-    let hash = hash.add(5);
+    let hash = hash + 5;
     match hash % 6 {
         0 => Color::Red,
         1 => Color::Green,
@@ -21,57 +19,49 @@ fn get_module_colour(module: &str) -> Color {
     }
 }
 
+pub fn setup_logging(level: log::LevelFilter) -> Result<(), fern::InitError> {
+    let colors = ColoredLevelConfig::new()
+        .error(fern::colors::Color::Red)
+        .warn(fern::colors::Color::Yellow)
+        .info(fern::colors::Color::Green)
+        .debug(fern::colors::Color::Blue)
+        .trace(fern::colors::Color::Cyan);
 
-pub fn setup_logging() -> Logger {
-    let x = drain();
-    slog::Logger::root(x, slog_o!())
+    fern::Dispatch::new()
+        .format(move |out, message, record| {
+            let module = record.target().replace("::", "/");
+            let module_color = get_module_color(&module);
+
+            let location_buffer = PathBuf::from(record.file().unwrap())
+                .canonicalize()
+                .unwrap_or(record.file().unwrap().into());
+            let loc = location_buffer.to_str().unwrap();
+
+            out.finish(format_args!(
+                "{} {}:{} {} {}",
+                format!("{}/{}", "ok.software/", module).color(module_color),
+                loc,
+                record.line().unwrap(),
+                colors.color(record.level()),
+                message
+            ))
+        })
+        .level(level)
+        .chain(io::stdout())
+        .apply()?;
+    Ok(())
 }
 
-#[allow(dead_code)]
-pub fn drain() -> slog::Fuse<slog_term::FullFormat<slog_term::PlainSyncDecorator<std::io::Stdout>>>
-{
-    let plain = slog_term::PlainSyncDecorator::new(std::io::stdout());
-    let ff = slog_term::FullFormat::new(plain);
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use log::info;
 
-    let x = ff
-        .use_custom_header_print(|_f, _t, r, _x| {
-            // print format is: dev.branch/{module} {level} {msg}
-            // module should be cleaned by :: -> /
-            // level should be colored use termcolor
-            let module = r.module().replace("::", "/");
-            let level = match r.level() {
-                slog::Level::Critical => termcolor::Color::Red,
-                slog::Level::Error => termcolor::Color::Red,
-                slog::Level::Warning => termcolor::Color::Yellow,
-                slog::Level::Info => termcolor::Color::Green,
-                slog::Level::Debug => termcolor::Color::Blue,
-                slog::Level::Trace => termcolor::Color::Cyan,
-            };
-            let location_buffer = PathBuf::from(r.location().file).canonicalize().unwrap();
-
-            let loc = location_buffer.to_str().unwrap();
-            let bufwtr = BufferWriter::stderr(ColorChoice::Always);
-            let mut buffer = bufwtr.buffer();
-            let module_color = get_module_colour(&module);
-            buffer.set_color(ColorSpec::new().set_fg(Some(module_color)))?;
-            let _ = write!(buffer, "dev.branch/software/ok/{} ", module,);
-            buffer.reset()?;
-            buffer.set_color(
-                ColorSpec::new()
-                    .set_dimmed(true)
-                    .set_underline(true)
-                    .set_fg(Some(Color::White)),
-            )?;
-            let _ = write!(buffer, "{}:{}", loc, r.location().line);
-            buffer.reset()?;
-            buffer.set_color(ColorSpec::new().set_fg(Some(level)).set_intense(true))?;
-            let _ = write!(buffer, " {}", r.level());
-            buffer.reset()?;
-            let _ = write!(buffer, " {}", r.msg());
-            let _ = bufwtr.print(&buffer);
-            std::result::Result::Ok(true)
-        })
-        .build()
-        .fuse();
-    x
+    #[test]
+    fn test_logging() {
+        setup_logging(log::LevelFilter::Error).unwrap();
+        for var in std::env::vars() {
+            info!("{}={}", var.0, var.1);
+        }
+    }
 }

@@ -6,4 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-okstd = { version = "*", path = ".." }
+okstd = { version = "*", path = "..", features = ["unstable"]}
+
+[[bin]]
+name = "log"
+path = "src/main.rs"
+
+[[bin]]
+name = "panics"
+path = "src/panics.rs"
+

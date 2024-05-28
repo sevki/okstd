@@ -2,19 +2,11 @@
 extern crate proc_macro;
 extern crate syn;
 
-#[macro_use(slog_o, slog_info, slog_log, slog_record, slog_record_static, slog_b, slog_kv)]
-extern crate slog;
-use darling::{Error, FromMeta};
 use proc_macro::TokenStream;
-use quote::{quote, ToTokens};
+use quote::quote;
 
-use syn::parse_quote;
-use syn::punctuated::Punctuated;
-use syn::{
-    parse_macro_input, spanned::Spanned, token, Expr, ExprAsync, ExprAwait, ExprBlock, ExprCall, ExprClosure,
-    ExprParen, FnArg, Ident, ItemFn, Meta, Pat, Result, ReturnType, Stmt, Type, TypePath,
-};
- 
+use syn::{parse_macro_input, ItemFn};
+
 mod func_transformer;
 
 #[proc_macro_attribute]
@@ -33,8 +25,6 @@ pub fn main(_attr: TokenStream, item: TokenStream) -> TokenStream {
     // Generate the new `main` function
     let new_main = quote! {
         fn main() {
-            set_hook(Box::new(panic_hook));
-            setup_logging();
             let rt = Runtimes::setup_runtimes().unwrap();
             rt.block_on(#old_main_ident())
         }
@@ -55,7 +45,7 @@ pub fn test(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(item as ItemFn);
     let orig_ident = input.sig.ident.clone();
     // Rename the `test` function to `old_test`
-    let new_name = format!("old_test_{}", orig_ident.to_string());
+    let new_name = format!("old_test_{}", orig_ident);
     let old_test_ident = syn::Ident::new(new_name.as_str(), input.sig.ident.span());
     input.sig.ident = old_test_ident.clone();
 
@@ -87,6 +77,10 @@ pub fn test(_attr: TokenStream, item: TokenStream) -> TokenStream {
     output.into()
 }
 
+#[proc_macro_attribute]
+pub fn crashdump(args: TokenStream, input: TokenStream) -> TokenStream {
+    func_transformer::setup_panic_hook(args, input)
+}
 
 #[proc_macro_attribute]
 pub fn log(args: TokenStream, input: TokenStream) -> TokenStream {

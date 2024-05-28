@@ -2,10 +2,12 @@
 
 pub mod log;
 pub mod okasync;
+
+#[cfg(feature = "unstable")]
 pub mod notokpanic;
 mod e2e_tests;
 
-extern crate slog;
+extern crate fern;
 
 pub mod prelude {
     pub use crate::okasync::*;
@@ -14,24 +16,24 @@ pub mod prelude {
     
     pub use super::main;
     // re-export the slog macros
-    pub use slog_scope::crit;
-    pub use slog_scope::debug;
-    pub use slog_scope::error;
-    pub use slog_scope::info;
-    pub use slog_scope::trace;
-    pub use slog_scope::warn;
-    pub use slog_scope::scope;
-    pub use slog_scope::logger;
-    pub use slog::OwnedKV;
-    pub use slog::o;
+    pub use fern::*;
+    pub use log::debug;
+    pub use log::error;
+    pub use log::info;
+    pub use log::trace;
+    pub use log::warn;
 
-    pub use slog_scope::set_global_logger;
+    pub use log::LevelFilter;
 
     pub use std::panic::set_hook;
-
+    
+    #[cfg(feature = "unstable")]
     pub use crate::notokpanic::panic_hook;
 }
 
 pub use ok_macros::main;
 pub use ok_macros::test;
 pub use ok_macros::log;
+
+#[cfg(feature = "unstable")]
+pub use ok_macros::crashdump;

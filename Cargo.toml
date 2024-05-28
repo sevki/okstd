@@ -1,11 +1,23 @@
 [package]
 name = "okstd"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+unstable = ["dep:symbolic", "dep:sourcemap"]
+
+
 [dependencies]
+symbolic = { version = "12.8.0", features = [
+    "common-serde",
+    "debuginfo-serde",
+    "demangle",
+    "symcache",
+    "debuginfo",
+], optional = true }
+sourcemap = { version = "8.0.1", optional = true }
 anyhow = "1.0.81"
 backtrace = { version = "0.3.71", features = ["serde", "serialize-serde"] }
 base64 = "0.22.0"
@@ -14,21 +26,14 @@ fastvlq = "1.1.1"
 futures = "0.3.30"
 hex = "0.4.3"
 num_cpus = "1.16.0"
-ok_macros = { version = "0.1.3", path = "ok_macros", registry = "oksoftware" }
+ok_macros = { version = "0.1.4", path = "ok_macros", registry = "oksoftware" }
 rustc-demangle = "0.1.23"
 serde = "*"
 serde_json = "*"
-slog = "2.7.0"
-slog-scope = "4.4.0"
-slog-term = "2.9.1"
-sourcemap = "8.0.1"
-symbolic = { version = "12.8.0", features = [
-    "common-serde",
-    "debuginfo-serde",
-    "demangle",
-    "symcache",
-    "debuginfo",
-] }
+log = "0.4"
+colored = "2"
+fern = { version = "0.6", features = ["colored"] }
+
 termcolor = "1.4.1"
 tokio = { version = "1.37.0", features = ["full"] }
 url = "2.5.0"

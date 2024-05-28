@@ -5,8 +5,8 @@ async fn main() {
     something();
 }
 
-#[okstd::log(debug)]
+#[okstd::log(info)]
 fn something() {
-    debug!("Hello, world!");
+    info!("Hello, world!");
     println!("Hello, world!");
 }
