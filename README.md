@@ -32,12 +32,10 @@ fn something() {
 }
 ```
 
-## Experimental Features under `unstable` feature flag
-
-```bash
+## Experimental Features 
 
 > [!CAUTION]
-> Very unstable and will likely change in the future.
+> Very unstable and only available under `unstable` feature flag.
 
 ### `okstd::crashdump`
 
