@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, punctuated::Punctuated, ItemFn};
 
-pub fn transform_function(
+pub fn setup_logging(
     args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -147,6 +147,88 @@ pub fn setup_panic_hook(
         return #body
     }
 
+    };
+
+    TokenStream::from(result)
+}
+
+/// testing
+/// take a function and if it's not async, just add the #[test] attribute
+/// if it's async, add the #[test] attribute and setup the runtime
+/// take the previous function body then pass it into block_on as 
+/// a closure
+/// ```rust,notest
+/// #[okstd::test]
+/// fn does_something() {
+///   // do something
+/// }
+/// ```
+/// to
+/// ```rust,notest
+/// #[test]
+/// fn does_something() {
+///  // do something
+/// }
+/// ```
+/// or
+/// ```rust,notest
+/// #[okstd::test]
+/// async fn does_something() {
+///  // do something
+/// }
+/// ```
+/// to
+/// ```rust,notest
+/// #[test]
+/// fn does_something() {
+///     Runtimes::setup_runtimes().unwrap().block_on(async #body)
+/// }
+/// ```
+pub fn test(
+    _args: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let mut item_fn = parse_macro_input!(input as ItemFn);
+
+    let fn_name = &item_fn.clone().sig.ident;
+
+    let attrs: &Vec<syn::Attribute> = &item_fn.attrs;
+    let asyncness: &Option<syn::token::Async> = &item_fn.sig.asyncness;
+    let generics: &syn::Generics = &item_fn.sig.generics;
+    let inputs: &Punctuated<syn::FnArg, syn::token::Comma> = &item_fn.sig.inputs;
+    
+    let output: &syn::ReturnType = &item_fn.sig.output;
+    let where_clause: &Option<syn::WhereClause> = &item_fn.sig.generics.where_clause;
+
+    let orig_ident = item_fn.sig.ident.clone();
+    // Rename the `test` function to `old_test`
+    let new_name = format!("__test_{}", orig_ident);
+    let old_ident = syn::Ident::new(new_name.as_str(), item_fn.sig.ident.span());
+    item_fn.sig.ident = old_ident.clone();
+
+    let body = &item_fn.block;
+
+    if asyncness.is_none() {
+        let result = quote! {
+          #[allow(unused_must_use)]
+          #[test]
+          fn #fn_name #generics(#inputs) #output 
+          #where_clause {
+            #body
+          }
+        };
+
+        return TokenStream::from(result)
+    }
+
+
+    let result = quote! {
+      #[allow(unused_must_use)]
+      #[test]
+      fn #fn_name #generics(#inputs) #output 
+      #where_clause {
+        Runtimes::setup_runtimes().unwrap().block_on(async #body)
+      }
     };
 
     TokenStream::from(result)

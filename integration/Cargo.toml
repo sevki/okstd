@@ -16,3 +16,6 @@ path = "src/main.rs"
 name = "panics"
 path = "src/panics.rs"
 
+[lib]
+name = "tests"
+path = "src/tests.rs"

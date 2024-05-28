@@ -41,40 +41,8 @@ pub fn main(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
 // test, just like main, but for tests.
 #[proc_macro_attribute]
-pub fn test(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    let mut input = parse_macro_input!(item as ItemFn);
-    let orig_ident = input.sig.ident.clone();
-    // Rename the `test` function to `old_test`
-    let new_name = format!("old_test_{}", orig_ident);
-    let old_test_ident = syn::Ident::new(new_name.as_str(), input.sig.ident.span());
-    input.sig.ident = old_test_ident.clone();
-
-    // Check if the function is async
-    let new_test = if input.sig.asyncness.is_none() {
-        quote! {
-            #[test]
-            fn #orig_ident() {
-                #old_test_ident()
-            }
-        }
-    } else {
-        quote! {
-            #[test]
-            fn #orig_ident() {
-                // set_hook(Box::new(panic_hook));
-                let rt = Runtimes::setup_runtimes().unwrap();
-                rt.block_on(#old_test_ident())
-            }
-        }
-    };
-
-    // Combine the input and the new `test` function
-    let output = quote! {
-        #input
-        #new_test
-    };
-
-    output.into()
+pub fn test(args: TokenStream, input: TokenStream) -> TokenStream {
+    func_transformer::test(args, input)
 }
 
 #[proc_macro_attribute]
@@ -84,5 +52,5 @@ pub fn crashdump(args: TokenStream, input: TokenStream) -> TokenStream {
 
 #[proc_macro_attribute]
 pub fn log(args: TokenStream, input: TokenStream) -> TokenStream {
-    func_transformer::transform_function(args, input)
+    func_transformer::setup_logging(args, input)
 }

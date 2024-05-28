@@ -1,6 +1,6 @@
 //!
 
-pub mod log;
+pub mod oklog;
 pub mod okasync;
 
 #[cfg(feature = "unstable")]
@@ -8,23 +8,26 @@ pub mod notokpanic;
 mod e2e_tests;
 
 extern crate fern;
-extern crate log as rustlog;
+
+use log as rustlog;
 
 pub mod prelude {
     pub use crate::okasync::*;
 
-    pub use crate::log::setup_logging;
+    pub use crate::oklog::setup_logging;
     
     pub use super::main;
+    pub use super::log;
+
     // re-export the slog macros
     pub use fern::*;
-    pub use rustlog::debug;
-    pub use rustlog::error;
-    pub use rustlog::info;
-    pub use rustlog::trace;
-    pub use rustlog::warn;
+    pub use crate::rustlog::debug;
+    pub use crate::rustlog::error;
+    pub use crate::rustlog::info;
+    pub use crate::rustlog::trace;
+    pub use crate::rustlog::warn;
 
-    pub use rustlog::LevelFilter;
+    pub use crate::rustlog::LevelFilter;
 
     pub use std::panic::set_hook;
     

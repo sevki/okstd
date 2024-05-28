@@ -13,7 +13,9 @@ cargo add okstd@0.1.0
 ```rust
 use okstd::prelude::*;
 ```
+
 ## Examples
+
 ### `okstd::main`
 
 ```rust
@@ -24,6 +26,7 @@ async fn main() {
 ```
 
 ### `okstd::log`
+
 ```rust
 #[okstd::log(debug)]
 fn something() {
@@ -32,7 +35,49 @@ fn something() {
 }
 ```
 
-## Experimental Features 
+### `okstd::test`
+
+take a function and if it's not async, just add the #[test] attribute
+if it's async, add the #[test] attribute and setup the runtime
+take the previous function body then pass it into block_on as a closure
+
+```rust
+#[okstd::test]
+fn does_something() {
+  // do something
+}
+```
+
+to
+
+```rust
+#[test]
+fn does_something() {
+ // do something
+}
+```
+
+or
+
+```rust
+#[okstd::test]
+async fn does_something() {
+ // do something
+}
+```
+
+to
+
+```rust
+#[test]
+fn does_something() {
+    Runtimes::setup_runtimes().unwrap().block_on(async {
+        // do something
+    });
+}
+```
+
+## Experimental Features
 
 > [!CAUTION]
 > Very unstable and only available under `unstable` feature flag.
@@ -50,6 +95,7 @@ async fn main() {
     panic!("This is a panic");
 }
 ```
+
 will return a crashdump string like so
 
 ```text
