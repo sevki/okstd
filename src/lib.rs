@@ -8,6 +8,7 @@ pub mod notokpanic;
 mod e2e_tests;
 
 extern crate fern;
+extern crate log as rustlog;
 
 pub mod prelude {
     pub use crate::okasync::*;
@@ -17,13 +18,13 @@ pub mod prelude {
     pub use super::main;
     // re-export the slog macros
     pub use fern::*;
-    pub use log::debug;
-    pub use log::error;
-    pub use log::info;
-    pub use log::trace;
-    pub use log::warn;
+    pub use rustlog::debug;
+    pub use rustlog::error;
+    pub use rustlog::info;
+    pub use rustlog::trace;
+    pub use rustlog::warn;
 
-    pub use log::LevelFilter;
+    pub use rustlog::LevelFilter;
 
     pub use std::panic::set_hook;
     
