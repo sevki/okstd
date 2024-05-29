@@ -46,30 +46,6 @@ const WELL_KNOWN_BORDER_FRAMES: &[&str] = &[
     "tracing_core::",
 ];
 
-// i64 to u64 without loss of data
-fn u64(x: i64) -> u64 {
-    x as u64
-}
-
-// i64 to u64 without loss of data
-fn i64(x: u64) -> i64 {
-    x as i64
-}
-
-fn uuid_to_i64(uuid: Uuid) -> (i64, i64) {
-    let (high, low) = uuid.as_u64_pair();
-    (
-        i64::from_be_bytes(high.to_ne_bytes()),
-        i64::from_ne_bytes(low.to_ne_bytes()),
-    )
-}
-
-fn i64_to_uuid(high: i64, low: i64) -> Uuid {
-    let high = u64::from_ne_bytes(high.to_ne_bytes());
-    let low = u64::from_ne_bytes(low.to_ne_bytes());
-    Uuid::from_u64_pair(high, low)
-}
-
 // generate_crashdump_url generates a crashdump URL for the
 // given addresses, current platform, architecture and debugId
 // buildId, commit and cargo package meta.
@@ -103,6 +79,7 @@ fn encode_crashdump_url(addresses: &[i64], debug_id: DebugId) -> String {
 
 // decode_crashdump_url decodes a crashdump URL and returns the
 // addresses, debugId, buildId, commit and cargo package meta.
+#[allow(dead_code)]
 fn decode_crashdump_url(url: &str) -> (Vec<i64>, DebugId) {
     let u = url::Url::parse(url).unwrap();
     let segments = u.path_segments().unwrap().collect::<Vec<_>>();

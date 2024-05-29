@@ -93,25 +93,7 @@ pub fn setup_logging(
 }
 
 
-/// setup panic hook for crashdu.mp
-/// similar to log, we just want to setup the panic hook
-/// and keep the function as is
-/// 
-/// # Example
-/// 
-/// ```rust,notest
-/// #[okstd::crashdump]
-/// fn does_something() {
-///    // do something
-/// }
-///```
-/// to 
-/// ```rust,notest
-/// fn does_something() {
-///   setup_panic_hook();
-///  // do something
-/// }
-/// ```
+
 pub fn setup_panic_hook(
     _args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
@@ -152,38 +134,7 @@ pub fn setup_panic_hook(
     TokenStream::from(result)
 }
 
-/// testing
-/// take a function and if it's not async, just add the #[test] attribute
-/// if it's async, add the #[test] attribute and setup the runtime
-/// take the previous function body then pass it into block_on as 
-/// a closure
-/// ```rust,notest
-/// #[okstd::test]
-/// fn does_something() {
-///   // do something
-/// }
-/// ```
-/// to
-/// ```rust,notest
-/// #[test]
-/// fn does_something() {
-///  // do something
-/// }
-/// ```
-/// or
-/// ```rust,notest
-/// #[okstd::test]
-/// async fn does_something() {
-///  // do something
-/// }
-/// ```
-/// to
-/// ```rust,notest
-/// #[test]
-/// fn does_something() {
-///     Runtimes::setup_runtimes().unwrap().block_on(async #body)
-/// }
-/// ```
+
 pub fn test(
     _args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
@@ -192,7 +143,7 @@ pub fn test(
 
     let fn_name = &item_fn.clone().sig.ident;
 
-    let attrs: &Vec<syn::Attribute> = &item_fn.attrs;
+    let _attrs: &Vec<syn::Attribute> = &item_fn.attrs;
     let asyncness: &Option<syn::token::Async> = &item_fn.sig.asyncness;
     let generics: &syn::Generics = &item_fn.sig.generics;
     let inputs: &Punctuated<syn::FnArg, syn::token::Comma> = &item_fn.sig.inputs;

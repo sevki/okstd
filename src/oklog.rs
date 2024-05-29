@@ -5,17 +5,22 @@ use std::{io, path::PathBuf};
 // get module color hashes the module name
 // and attempts to return a unique color as far as ansi colors go
 fn get_module_color(module: &str) -> colored::Color {
-    // crc16 is a good hash for this
-    let hash = crc16::State::<crc16::XMODEM>::calculate(module.as_bytes());
-    let hash = hash + 5;
-    match hash % 6 {
+    let hash = module
+        .chars()
+        .fold(0 as u32, |acc, c| acc.wrapping_add(c as u32));
+    match hash % 13 {
         0 => Color::Red,
         1 => Color::Green,
         2 => Color::Yellow,
         3 => Color::Blue,
         4 => Color::Magenta,
         5 => Color::Cyan,
-        _ => Color::White,
+        8 => Color::BrightRed,
+        9 => Color::BrightGreen,
+        10 => Color::BrightYellow,
+        11 => Color::BrightBlue,
+        12 => Color::BrightMagenta,
+        _ => Color::BrightCyan,
     }
 }
 
@@ -39,7 +44,7 @@ pub fn setup_logging(level: log::LevelFilter) -> Result<(), fern::InitError> {
 
             out.finish(format_args!(
                 "{} {}:{} {} {}",
-                format!("{}/{}", "ok.software/", module).color(module_color),
+                format!("{}/{}", "ok.software", module).color(module_color),
                 loc,
                 record.line().unwrap(),
                 colors.color(record.level()),
@@ -56,6 +61,24 @@ pub fn setup_logging(level: log::LevelFilter) -> Result<(), fern::InitError> {
 mod tests {
     use super::*;
     use log::info;
+
+    #[test]
+    fn test_module_color() {
+        let module = "okstd::oklog";
+        let color = get_module_color(module);
+        println!("Module: {} Color: {:?}", module, color);
+    }
+
+    #[test]
+    fn test_module_color_randomness_by_hash() {
+        let mut colors = vec![];
+        for i in 0..100 {
+            let module = format!("okstd::oklog::{}", i);
+            let color = get_module_color(&module);
+            colors.push(color);
+        }
+        println!("Colors: {:?}", colors);
+    }
 
     #[test]
     fn test_logging() {

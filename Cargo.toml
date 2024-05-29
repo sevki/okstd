@@ -1,13 +1,16 @@
 [package]
 name = "okstd"
-version = "0.1.6"
+version = "0.1.9"
 edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-unstable = ["dep:symbolic", "dep:sourcemap"]
-
+unstable = ["dep:symbolic", "dep:sourcemap", "dep:backtrace", "macros" ]
+macros = ["dep:ok_macros"]
 
 [dependencies]
 symbolic = { version = "12.8.0", features = [
@@ -17,26 +20,29 @@ symbolic = { version = "12.8.0", features = [
     "symcache",
     "debuginfo",
 ], optional = true }
+
+crc32_digest = "0.8.1"
 sourcemap = { version = "8.0.1", optional = true }
 anyhow = "1.0.81"
-backtrace = { version = "0.3.71", features = ["serde", "serialize-serde"] }
+backtrace = { version = "0.3.71", features = ["serde", "serialize-serde"], optional = true }
 base64 = "0.22.0"
 crc16 = "0.4.0"
 fastvlq = "1.1.1"
 futures = "0.3.30"
 hex = "0.4.3"
 num_cpus = "1.16.0"
-ok_macros = { version = "0.1.6", path = "ok_macros", registry = "oksoftware" }
+ok_macros = { version = "0.1.9", path = "ok_macros", registry = "oksoftware", optional = true }
 rustc-demangle = "0.1.23"
 serde = "*"
 serde_json = "*"
 log = "0.4"
 colored = "2"
 fern = { version = "0.6", features = ["colored"] }
-
 termcolor = "1.4.1"
-tokio = { version = "1.37.0", features = ["full"] }
 url = "2.5.0"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1.37.0", features = ["full"] }
 
 [workspace]
 members = ["integration", "ok_macros"]
