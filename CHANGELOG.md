@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/sevki/okstd/compare/v1.0.1...v1.0.2) (2025-02-22)
+
+
+### Bug Fixes
+
+* impls macro aplies variant attrs to trait asserts ([4ff7619](https://github.com/sevki/okstd/commit/4ff7619831207032b9da7ea5da464841b025a993))
+
 ## [1.0.1](https://github.com/sevki/okstd/compare/v1.0.0...v1.0.1) (2025-02-22)
 
 
