@@ -1,6 +1,6 @@
 [package]
 name = "okstd"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 license = "BSD-3-Clause"
 description = "The standard library that's ok"
@@ -25,7 +25,7 @@ fastvlq = "1.1.1"
 futures = "0.3.30"
 hex = "0.4.3"
 num_cpus = "1.16.0"
-ok_macros = { version = "1.0.0", path = "ok_macros", optional = true }
+ok_macros = { version = "1.0.1", path = "ok_macros", optional = true }
 
 log = "0.4"
 colored = "2"

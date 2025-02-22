@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.1](https://github.com/sevki/okstd/compare/v1.0.0...v1.0.1) (2025-02-22)
+
+
+### Bug Fixes
+
+* all-features ([572c864](https://github.com/sevki/okstd/commit/572c864bd26fd96dbc1ed2afee46ebfb75710252))
+* docs ([5384499](https://github.com/sevki/okstd/commit/5384499fc76be6025b25df669d7514ac94ecb7af))
+* docs ([3be4a08](https://github.com/sevki/okstd/commit/3be4a08f7e61a251c624d562ab4fee499bafd3d8))
+* idna ([ddf5370](https://github.com/sevki/okstd/commit/ddf53705317073d1c2b8b2a56efbd81b12e98dcd))
+* no-default-features tests ([6211487](https://github.com/sevki/okstd/commit/62114871b0de2893862fd45f0500f582d681392b))
+
 ## [1.0.0](https://github.com/sevki/okstd/compare/v0.1.0...v1.0.0) (2025-02-22)
 
 
