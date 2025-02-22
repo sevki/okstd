@@ -1,5 +1,5 @@
 # okstd
-
+[![crates.io](https://img.shields.io/crates/v/okstd.svg)](https://crates.io/crates/okstd)[![docs.rs](https://docs.rs/okstd/badge.svg)](https://docs.rs/okstd)![Build Status](https://github.com/sevki/okstd/actions/workflows/rust.yml/badge.svg)[![Release Please🙏!](https://github.com/sevki/okstd/actions/workflows/release-please.yml/badge.svg)](https://github.com/sevki/okstd/actions/workflows/release-please.yml)
 <img src="https://assets.ok.software/okstd.png" align="right" width="200">
 
 Standards that are OK.
