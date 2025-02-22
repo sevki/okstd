@@ -1,13 +1,15 @@
-use colored::*;
-use fern::colors::ColoredLevelConfig;
-use std::{io, path::PathBuf};
+use {
+    colored::*,
+    fern::colors::ColoredLevelConfig,
+    std::{io, path::PathBuf},
+};
 
 // get module color hashes the module name
 // and attempts to return a unique color as far as ansi colors go
 fn get_module_color(module: &str) -> colored::Color {
     let hash = module
         .chars()
-        .fold(0 as u32, |acc, c| acc.wrapping_add(c as u32));
+        .fold(0_u32, |acc, c| acc.wrapping_add(c as u32));
     match hash % 13 {
         0 => Color::Red,
         1 => Color::Green,
@@ -59,8 +61,7 @@ pub fn setup_logging(level: log::LevelFilter) -> Result<(), fern::InitError> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use log::info;
+    use {super::*, log::info};
 
     #[test]
     fn test_module_color() {

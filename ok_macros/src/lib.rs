@@ -1,11 +1,13 @@
 #![recursion_limit = "128"]
 
-use proc_macro::TokenStream;
-use quote::quote;
-
-use syn::{parse_macro_input, ItemFn};
+use {
+    proc_macro::TokenStream,
+    quote::quote,
+    syn::{parse_macro_input, ItemFn},
+};
 
 mod func_transformer;
+mod impls;
 
 #[proc_macro_attribute]
 pub fn main(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -44,11 +46,11 @@ pub fn test(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-pub fn crashdump(args: TokenStream, input: TokenStream) -> TokenStream {
-    func_transformer::setup_panic_hook(args, input)
+pub fn log(args: TokenStream, input: TokenStream) -> TokenStream {
+    func_transformer::setup_logging(args, input)
 }
 
 #[proc_macro_attribute]
-pub fn log(args: TokenStream, input: TokenStream) -> TokenStream {
-    func_transformer::setup_logging(args, input)
+pub fn impls(args: TokenStream, input: TokenStream) -> TokenStream {
+    impls::impls(args, input)
 }

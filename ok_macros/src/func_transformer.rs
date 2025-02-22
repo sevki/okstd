@@ -1,6 +1,8 @@
-use proc_macro::TokenStream;
-use quote::quote;
-use syn::{parse_macro_input, punctuated::Punctuated, ItemFn};
+use {
+    proc_macro::TokenStream,
+    quote::quote,
+    syn::{parse_macro_input, punctuated::Punctuated, ItemFn},
+};
 
 pub fn setup_logging(
     args: proc_macro::TokenStream,
@@ -29,10 +31,10 @@ pub fn setup_logging(
     let fn_name = &item_fn.clone().sig.ident;
 
     let attrs: &Vec<syn::Attribute> = &item_fn.attrs;
-    let asyncness: &Option<syn::token::Async> = &item_fn.sig.asyncness;
+    let is_async: &Option<syn::token::Async> = &item_fn.sig.asyncness;
     let generics: &syn::Generics = &item_fn.sig.generics;
     let inputs: &Punctuated<syn::FnArg, syn::token::Comma> = &item_fn.sig.inputs;
-    
+
     let output: &syn::ReturnType = &item_fn.sig.output;
     let where_clause: &Option<syn::WhereClause> = &item_fn.sig.generics.where_clause;
 
@@ -63,8 +65,8 @@ pub fn setup_logging(
     if level == Level::Off {
         return old_fn;
     }
-    let mut olf_fnc: ItemFn = parse_macro_input!(old_fn as ItemFn);
-    olf_fnc.sig.ident = old_ident.clone();
+    let mut old_func: ItemFn = parse_macro_input!(old_fn as ItemFn);
+    old_func.sig.ident = old_ident.clone();
 
     let level_token = match level {
         Level::Off => quote! {},
@@ -81,7 +83,7 @@ pub fn setup_logging(
     let result = quote! {
       #[allow(unused_must_use, unreachable_code)]
       #( #attrs )*
-      #asyncness fn #fn_name #generics(#inputs) #output 
+      #is_async fn #fn_name #generics(#inputs) #output
       #where_clause {
         setup_logging(#level_token);
         return #body
@@ -92,49 +94,6 @@ pub fn setup_logging(
     TokenStream::from(result)
 }
 
-
-
-pub fn setup_panic_hook(
-    _args: proc_macro::TokenStream,
-    input: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
-    
-
-    let mut item_fn = parse_macro_input!(input as ItemFn);
-
-    let fn_name = &item_fn.clone().sig.ident;
-
-    let attrs: &Vec<syn::Attribute> = &item_fn.attrs;
-    let asyncness: &Option<syn::token::Async> = &item_fn.sig.asyncness;
-    let generics: &syn::Generics = &item_fn.sig.generics;
-    let inputs: &Punctuated<syn::FnArg, syn::token::Comma> = &item_fn.sig.inputs;
-    
-    let output: &syn::ReturnType = &item_fn.sig.output;
-    let where_clause: &Option<syn::WhereClause> = &item_fn.sig.generics.where_clause;
-
-    let orig_ident = item_fn.sig.ident.clone();
-    // Rename the `test` function to `old_test`
-    let new_name = format!("__panic_hook_{}", orig_ident);
-    let old_ident = syn::Ident::new(new_name.as_str(), item_fn.sig.ident.span());
-    item_fn.sig.ident = old_ident.clone();
-
-    let body = &item_fn.block;
-
-    let result = quote! {
-      #[allow(unused_must_use)]
-      #( #attrs )*
-      #asyncness fn #fn_name #generics(#inputs) #output 
-      #where_clause {
-        std::panic::set_hook(Box::new(panic_hook));
-        return #body
-    }
-
-    };
-
-    TokenStream::from(result)
-}
-
-
 pub fn test(
     _args: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
@@ -144,10 +103,10 @@ pub fn test(
     let fn_name = &item_fn.clone().sig.ident;
 
     let _attrs: &Vec<syn::Attribute> = &item_fn.attrs;
-    let asyncness: &Option<syn::token::Async> = &item_fn.sig.asyncness;
+    let is_async: &Option<syn::token::Async> = &item_fn.sig.asyncness;
     let generics: &syn::Generics = &item_fn.sig.generics;
     let inputs: &Punctuated<syn::FnArg, syn::token::Comma> = &item_fn.sig.inputs;
-    
+
     let output: &syn::ReturnType = &item_fn.sig.output;
     let where_clause: &Option<syn::WhereClause> = &item_fn.sig.generics.where_clause;
 
@@ -159,24 +118,23 @@ pub fn test(
 
     let body = &item_fn.block;
 
-    if asyncness.is_none() {
+    if is_async.is_none() {
         let result = quote! {
           #[allow(unused_must_use)]
           #[test]
-          fn #fn_name #generics(#inputs) #output 
+          fn #fn_name #generics(#inputs) #output
           #where_clause {
             #body
           }
         };
 
-        return TokenStream::from(result)
+        return TokenStream::from(result);
     }
-
 
     let result = quote! {
       #[allow(unused_must_use)]
       #[test]
-      fn #fn_name #generics(#inputs) #output 
+      fn #fn_name #generics(#inputs) #output
       #where_clause {
         Runtimes::setup_runtimes().unwrap().block_on(async #body)
       }

@@ -21,3 +21,12 @@ use okstd::prelude::*;
 ```
 
 ## Examples
+
+### `okstd::main`
+
+```rust
+#[okstd::main]
+async fn main() {
+    something();
+}
+```

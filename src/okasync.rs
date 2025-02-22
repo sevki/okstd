@@ -32,27 +32,14 @@ impl Runtime for tokio::runtime::Runtime {
         self.block_on(future)
     }
 }
-#[cfg(feature = "cros_async")]
-impl Runtime for cros_async::Executor {
-    fn block_on<F: Future>(&self, future: F) -> F::Output {
-        self.run_until(future).unwrap()
-    }
-}
-
 pub enum Runtimes {
     Tokio(tokio::runtime::Runtime),
-
-    #[cfg(feature = "cros_async")]
-    Cros(cros_async::Executor),
 }
 
 impl Runtime for Runtimes {
     fn block_on<F: Future>(&self, future: F) -> F::Output {
         match self {
             Runtimes::Tokio(rt) => rt.block_on(future),
-
-            #[cfg(feature = "cros_async")]
-            Runtimes::Cros(executor) => executor.block_on(future),
         }
     }
 }
