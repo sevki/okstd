@@ -10,14 +10,4 @@ Rust's ecosystem is known for its vibrant community and wealth of high-quality c
 
 This is the crate when we reach for when we need such primitives, essentially the "Battery Included" crate.
 
-## Getting Started
-
-```bash
-cargo add okstd@0.1.0
-```
-
-```rust
-use okstd::prelude::*;
-```
-
-## Examples
+[📚 Read the book 📚](https://sevki.github.io/okstd)
