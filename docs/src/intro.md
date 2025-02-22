@@ -27,6 +27,7 @@ use okstd::prelude::*;
 ```rust
 #[cfg(feature = "macros")]
 {
+    use okstd::prelude::*;
     fn something() {
         println!("Hello, world!");
     }
