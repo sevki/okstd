@@ -46,7 +46,7 @@ pub fn setup_logging(level: log::LevelFilter) -> Result<(), fern::InitError> {
 
             out.finish(format_args!(
                 "{} {}:{} {} {}",
-                format!("{}/{}", "ok.software", module).color(module_color),
+                format!("{}/{}", "🦀", module).color(module_color),
                 loc,
                 record.line().unwrap(),
                 colors.color(record.level()),
