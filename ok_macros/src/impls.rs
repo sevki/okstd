@@ -40,12 +40,16 @@ pub fn impls(args: TokenStream, input: TokenStream) -> TokenStream {
 
     let checks = data_enum.variants.iter().flat_map(|variant| {
         let variant_name = &variant.ident;
+        let attrs = &variant.attrs;
+
         match &variant.fields {
             Fields::Unnamed(fields) => {
                 fields.unnamed.iter().flat_map(|field| {
                     let ty = &field.ty;
+
                     let trait_bounds = trait_checks.iter().map(|trait_path| {
                         quote! {
+                            #(#attrs)*
                             const _: () = {
                                 trait AssertImpl where #ty: #trait_path {}
                             };
@@ -64,7 +68,6 @@ pub fn impls(args: TokenStream, input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         #input
-
         #(#checks)*
     };
 
