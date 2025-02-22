@@ -444,7 +444,7 @@ dependencies = [
 
 [[package]]
 name = "ok_macros"
-version = "0.1.10"
+version = "0.1.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -453,7 +453,7 @@ dependencies = [
 
 [[package]]
 name = "okstd"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "argh",
