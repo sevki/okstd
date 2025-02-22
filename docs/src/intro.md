@@ -1,6 +1,6 @@
 # okstd
 
-<img src="okstd.png" align="right" width="200">
+<img src="https://assets.ok.software/okstd.png" align="right" width="200">
 
 Standards that are OK.
 

@@ -1,3 +1,8 @@
+#![doc = include_str!("../docs/src/intro.md")]
+#![doc(html_logo_url = "https://assets.ok.software/okstd.png")]
+#![doc(html_favicon_url = "https://assets.ok.software/okstd.png")]
+#![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
+
 pub mod oklog;
 // if not wasm
 #[cfg(not(target_arch = "wasm32"))]
