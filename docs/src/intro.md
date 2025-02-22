@@ -25,8 +25,14 @@ use okstd::prelude::*;
 ### `okstd::main`
 
 ```rust
-#[okstd::main]
-async fn main() {
-    something();
+#[cfg(feature = "macros")]
+{
+    fn something() {
+        println!("Hello, world!");
+    }
+    #[okstd::main]
+    async fn main() {
+        something();
+    }
 }
 ```

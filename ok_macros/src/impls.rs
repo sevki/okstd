@@ -1,10 +1,17 @@
 // impls.rs
-use proc_macro::TokenStream;
-use quote::quote;
-use syn::parse::{Parse, ParseStream};
-use syn::punctuated::Punctuated;
-use syn::Token;
-use syn::{parse_macro_input, Data, DeriveInput, Fields};
+use {
+    proc_macro::TokenStream,
+    quote::quote,
+    syn::{
+        parse::{Parse, ParseStream},
+        parse_macro_input,
+        punctuated::Punctuated,
+        Data,
+        DeriveInput,
+        Fields,
+        Token,
+    },
+};
 
 struct ImplsArgs {
     traits: Punctuated<syn::Path, Token![,]>,
