@@ -29,7 +29,7 @@ ok_macros = { version = "1.0.0", path = "ok_macros", optional = true }
 
 log = "0.4"
 colored = "2"
-fern = { version = "0.6", features = ["colored"] }
+fern = { version = "0.7", features = ["colored"] }
 termcolor = "1.4.1"
 url = "2.5.0"
 argh = { version = "0.1.12", optional = true }
