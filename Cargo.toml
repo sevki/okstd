@@ -42,4 +42,4 @@ tokio = { version = "1.43.0", features = ["full"] }
 members = [ "ok_macros"]
 
 [dev-dependencies]
-trybuild = "1.0.96"
+trybuild = "1.0.104"
