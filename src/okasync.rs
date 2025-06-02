@@ -1,5 +1,7 @@
 // async_runtime.rs
-use std::future::Future;
+
+// Removed: use std::future::Future; as it's no longer used directly in this file
+// after removing the Runtime trait and its impls.
 
 pub use futures::{
     future::{FutureExt, TryFutureExt},
@@ -15,47 +17,8 @@ impl<T: ?Sized + futures::io::AsyncWrite> AsyncWrite for T {}
 
 type Result<T> = anyhow::Result<T>;
 
-pub trait Runtime: Unpin {
-    fn block_on<F: Future>(&self, future: F) -> F::Output;
-
-    fn spawn<F>(&self, future: F)
-    where
-        F: Future + Send + 'static,
-        F::Output: Send + 'static,
-    {
-        self.block_on(future);
-    }
-}
-
-impl Runtime for tokio::runtime::Runtime {
-    fn block_on<F: Future>(&self, future: F) -> F::Output {
-        self.block_on(future)
-    }
-}
-pub enum Runtimes {
-    Tokio(tokio::runtime::Runtime),
-}
-
-impl Runtime for Runtimes {
-    fn block_on<F: Future>(&self, future: F) -> F::Output {
-        match self {
-            Runtimes::Tokio(rt) => rt.block_on(future),
-        }
-    }
-}
-
-impl Runtimes {
-    pub fn setup_runtimes() -> Result<Runtimes> {
-        let worker_count = num_cpus::get() * 1.5 as usize;
-        if let Ok(rt) = tokio::runtime::Builder::new_multi_thread()
-            // create a thread pool with core count of the machine
-            .worker_threads(worker_count)
-            .enable_all()
-            .build()
-        {
-            Ok(Runtimes::Tokio(rt))
-        } else {
-            Err(anyhow::anyhow!("No supported runtime available"))
-        }
-    }
-}
+// Removed: pub trait Runtime: Unpin { ... }
+// Removed: impl Runtime for tokio::runtime::Runtime { ... }
+// Removed: pub enum Runtimes { ... }
+// Removed: impl Runtime for Runtimes { ... }
+// Removed: impl Runtimes { pub fn setup_runtimes() -> Result<Runtimes> { ... } }
