@@ -28,7 +28,7 @@ num_cpus = "1.16.0"
 ok_macros = { version = "1.0.2", path = "ok_macros", optional = true }
 
 log = "0.4"
-colored = "2"
+colored = "3"
 fern = { version = "0.7", features = ["colored"] }
 termcolor = "1.4.1"
 url = "2.5.0"
