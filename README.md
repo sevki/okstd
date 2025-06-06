@@ -1,6 +1,9 @@
-# okstd
+<picture >
+  <source media="(max-width:200px),(prefers-color-scheme: dark)" srcset="okstd-dark.png"/>
+  <img align="right" width="200px" alt="Fallback image description" src="okstd.png"/>
+</picture>
 
-<img src="okstd.png" align="right" width="200">
+# okstd
 
 Standards that are OK.
 
