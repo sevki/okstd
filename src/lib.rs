@@ -10,7 +10,9 @@ pub mod oklog;
 
 #[cfg(feature = "argh")]
 extern crate argh;
+#[cfg(feature = "macros")]
 extern crate ok_macros;
+#[cfg(feature = "macros")]
 extern crate tokio_macros;
 extern crate tracing;
 
