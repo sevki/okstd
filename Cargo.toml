@@ -1,6 +1,6 @@
 [package]
 name = "okstd"
-version = "1.0.2"
+version = "2.0.0"
 edition = "2021"
 license = "BSD-3-Clause"
 description = "The standard library that's ok"
@@ -24,7 +24,7 @@ crc16 = "0.4.0"
 futures = "0.3.30"
 hex = "0.4.3"
 num_cpus = "1.16.0"
-ok_macros = { version = "1.0.2", path = "ok_macros", optional = true }
+ok_macros = { version = "2.0.0", path = "ok_macros", optional = true }
 url = "2.5.0"
 argh = { version = "0.1.12", optional = true }
 tracing = "0.1.41"
