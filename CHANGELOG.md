@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/sevki/okstd/compare/v1.0.2...v2.0.0) (2025-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* update defaultes
+
+### Features
+
+* update defaultes ([23170fe](https://github.com/sevki/okstd/commit/23170fec4f75e24d2e91732abe3147c6e4cfc9dc))
+
 ## [1.0.2](https://github.com/sevki/okstd/compare/v1.0.1...v1.0.2) (2025-02-22)
 
 
