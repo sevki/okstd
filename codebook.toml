@@ -1,0 +1,5 @@
+dictionaries = []
+words = ["impls"]
+flag_words = []
+ignore_paths = []
+ignore_patterns = []
