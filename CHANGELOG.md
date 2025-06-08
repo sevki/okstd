@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/sevki/okstd/compare/v2.0.0...v2.0.1) (2025-06-08)
+
+
+### Bug Fixes
+
+* broken feature flags ([34f97f4](https://github.com/sevki/okstd/commit/34f97f480291f978df9652fd7c0d891d9e0ce27f))
+
 ## [2.0.0](https://github.com/sevki/okstd/compare/v1.0.2...v2.0.0) (2025-06-08)
 
 
