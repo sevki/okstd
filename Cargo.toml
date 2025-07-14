@@ -35,5 +35,5 @@ tokio-macros = "2.5.0"
 members = [ "ok_macros"]
 
 [dev-dependencies]
-trybuild = "1.0.105"
+trybuild = "1.0.106"
 tokio = { version = "1.45.1", features = ["full"] }
