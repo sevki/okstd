@@ -23,7 +23,7 @@ base64 = "0.22.0"
 crc16 = "0.4.0"
 futures = "0.3.30"
 hex = "0.4.3"
-num_cpus = "1.16.0"
+num_cpus = "1.17.0"
 ok_macros = { version = "2.0.1", path = "ok_macros", optional = true }
 url = "2.5.0"
 argh = { version = "0.1.12", optional = true }
