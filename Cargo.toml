@@ -28,7 +28,7 @@ ok_macros = { version = "2.0.1", path = "ok_macros", optional = true }
 url = "2.5.0"
 argh = { version = "0.1.12", optional = true }
 tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
+tracing-subscriber = "0.3.20"
 tokio-macros = "2.5.0"
 
 [workspace]
