@@ -14,7 +14,19 @@ extern crate argh;
 extern crate ok_macros;
 #[cfg(feature = "macros")]
 extern crate tokio_macros;
+
+extern crate googletest;
+
 extern crate tracing;
+use std::{future::Future, pin::Pin};
+
+#[doc = include_str!("../docs/src/test.md")]
+pub mod test;
+
+pub use test::oktest;
+
+#[doc(hidden)]
+pub mod macro_test_suite;
 
 pub mod prelude {
 
@@ -42,6 +54,6 @@ pub use ok_macros::log;
 #[cfg(feature = "macros")]
 #[doc = include_str!("../docs/src/main.md")]
 pub use tokio_macros::main;
-#[cfg(feature = "macros")]
-#[doc = include_str!("../docs/src/test.md")]
-pub use tokio_macros::test;
+
+pub type Promise<T> = Pin<Box<dyn Future<Output = T>>>;
+pub type BoxPin<T> = Pin<Box<T>>;

@@ -4,7 +4,7 @@
 Re-exports the `#[tokio::test]`.
 
 ```rust
-#[okstd::test]
+#[okstd::oktest]
 async fn does_something() {
  // do something
 }

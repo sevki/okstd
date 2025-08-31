@@ -1,4 +1,4 @@
- ### `okstd::log`
+ ### `okstd::impls`
 
  A proc macro for verifying trait implementations on enum variants.
 

@@ -4,7 +4,7 @@
 
 <picture >
   <source media="(max-width:200px),(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sevki/okstd/refs/heads/main/okstd-dark.png"/>
-  <img align="right" width="200px" alt="Fallback image description" src="https://raw.githubusercontent.com/sevki/okstd/refs/heads/main/okstd.png"/>
+  <img align="right" width="200px" alt="okstd" src="https://raw.githubusercontent.com/sevki/okstd/refs/heads/main/okstd.png"/>
 </picture>
 
 Standards that are OK.
