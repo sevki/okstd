@@ -18,7 +18,7 @@ argh = ["dep:argh"]
 
 [dependencies]
 crc32_digest = "0.8.1"
-anyhow = "1.0.98"
+anyhow = "1.0.99"
 base64 = "0.22.0"
 crc16 = "0.4.0"
 futures = "0.3.30"
