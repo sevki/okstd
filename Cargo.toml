@@ -36,4 +36,4 @@ members = [ "ok_macros"]
 
 [dev-dependencies]
 trybuild = "1.0.111"
-tokio = { version = "1.47.1", features = ["full"] }
+tokio = { version = "1.47.2", features = ["full"] }
